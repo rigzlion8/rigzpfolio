@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 type Props = {
   src: string;
@@ -28,11 +29,11 @@ export default function Thumbnail({ src, alt, className, fallbackSrc }: Props) {
   const [triedLocal, setTriedLocal] = useState(false);
 
   return (
-    <img
+    <Image
       src={currentSrc}
       alt={alt}
+      fill
       className={className}
-      loading="lazy"
       onError={() => {
         if (!triedLocal && fallbackSrc) {
           setTriedLocal(true);

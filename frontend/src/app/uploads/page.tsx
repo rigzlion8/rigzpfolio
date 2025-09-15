@@ -6,7 +6,11 @@ import Link from "next/link";
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
 
 export default function UploadsPage() {
-  const [signature, setSignature] = useState<any>(null);
+  const [signature, setSignature] = useState<{
+    signature: string;
+    timestamp: number;
+    folder: string;
+  } | null>(null);
   const [folder, setFolder] = useState("maishatech");
 
   const getSignature = async () => {

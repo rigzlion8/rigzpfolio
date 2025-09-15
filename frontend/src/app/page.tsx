@@ -81,7 +81,7 @@ export default function Home() {
                       src={thumb}
                       fallbackSrc={local}
                       alt={`${p.name} thumbnail`}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                      className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                     />
                     <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                   </div>

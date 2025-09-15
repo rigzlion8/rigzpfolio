@@ -1,3 +1,5 @@
+import Thumbnail from "@/components/Thumbnail";
+
 const projects = [
   { name: "E‑Commerce", href: "https://myduka-beta.vercel.app", category: "Commerce" },
   { name: "Service Delivery", href: "https://saka-kazi.vercel.app", category: "Services" },
@@ -26,19 +28,12 @@ export default function ProjectsPage() {
               className="group rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 hover:shadow-lg transition-all bg-white dark:bg-neutral-950"
             >
               <div className="aspect-[4/3] bg-neutral-100 dark:bg-neutral-900 overflow-hidden relative">
-                <svg viewBox="0 0 16 9" className="absolute inset-0 h-full w-full" aria-hidden>
-                  <filter id="shimmer">
-                    <feGaussianBlur stdDeviation="1.2"/>
-                  </filter>
-                </svg>
-                {/* Use client Thumbnail via dynamic import-like approach */}
-                {/* @ts-expect-error client component import */}
-                {require("@/components/Thumbnail").default({
-                  src: thumb,
-                  fallbackSrc: local,
-                  alt: `${p.name} thumbnail`,
-                  className: "h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]",
-                })}
+                <Thumbnail
+                  src={thumb}
+                  fallbackSrc={local}
+                  alt={`${p.name} thumbnail`}
+                  className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                />
                 <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/30 via-transparent to-transparent" />
               </div>
               <div className="p-3">
