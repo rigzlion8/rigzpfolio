@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Thumbnail from "@/components/Thumbnail";
 
 type ExternalProject = {
   name: string;
@@ -66,21 +67,23 @@ export default function Home() {
           <div className="mt-4 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {projects.map((p) => {
               const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=960`;
+              const local = `/thumbs/${p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.png`;
               return (
                 <a
                   key={`${p.href}-${p.name}`}
                   href={p.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 hover:shadow-md transition-shadow bg-white dark:bg-neutral-950"
+                  className="group rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 hover:shadow-lg transition-all bg-white dark:bg-neutral-950"
                 >
-                  <div className="aspect-[4/3] bg-neutral-100 dark:bg-neutral-900 overflow-hidden">
-                    <img
+                  <div className="aspect-[4/3] bg-neutral-100 dark:bg-neutral-900 overflow-hidden relative">
+                    <Thumbnail
                       src={thumb}
+                      fallbackSrc={local}
                       alt={`${p.name} thumbnail`}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                     />
+                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/30 via-transparent to-transparent" />
                   </div>
                   <div className="p-3">
                     <div className="text-xs uppercase tracking-wide opacity-60">{p.category}</div>
