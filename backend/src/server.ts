@@ -35,7 +35,7 @@ if (!mongoUri) {
     minPoolSize: 5, // Maintain a minimum of 5 socket connections
     maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
     retryWrites: true,
-    w: 'majority'
+    w: 'majority' as const
   };
 
   mongoose
@@ -58,7 +58,7 @@ if (!mongoUri) {
 
 app.get("/health", (_req, res) => {
   const dbStatus = mongoose.connection.readyState;
-  const dbStates = {
+  const dbStates: Record<number, string> = {
     0: 'disconnected',
     1: 'connected',
     2: 'connecting',
