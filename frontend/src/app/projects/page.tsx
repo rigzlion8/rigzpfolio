@@ -18,7 +18,6 @@ export default function ProjectsPage() {
       <div className="mt-6 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {projects.map((p) => {
           const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=960`;
-          const local = `/thumbs/${p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.png`;
           return (
             <a
               key={`${p.href}-${p.name}`}
@@ -30,8 +29,9 @@ export default function ProjectsPage() {
               <div className="aspect-[4/3] bg-neutral-100 dark:bg-neutral-900 overflow-hidden relative">
                 <Thumbnail
                   src={thumb}
-                  fallbackSrc={local}
                   alt={`${p.name} thumbnail`}
+                  projectName={p.name}
+                  category={p.category}
                   className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                 />
                 <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/30 via-transparent to-transparent" />
