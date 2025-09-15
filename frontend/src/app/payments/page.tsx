@@ -22,7 +22,11 @@ export default function PaymentsPage() {
     message: "",
   });
   const [loading, setLoading] = useState("");
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<{
+    type: string;
+    data?: unknown;
+    error?: unknown;
+  } | null>(null);
 
   const handlePaystack = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -200,7 +204,7 @@ export default function PaymentsPage() {
 
         {/* SMS */}
         <div className="mt-8 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
-          <h2 className="text-lg font-semibold mb-4">SMS via Africa's Talking</h2>
+          <h2 className="text-lg font-semibold mb-4">SMS via Africa&apos;s Talking</h2>
           <form onSubmit={handleSms} className="space-y-4 max-w-md">
             <div>
               <label className="block text-sm font-medium mb-1">Phone Number</label>

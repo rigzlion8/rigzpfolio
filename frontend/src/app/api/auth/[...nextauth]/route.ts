@@ -22,9 +22,9 @@ const handler = NextAuth({
         ...session,
         user: {
           ...(session.user || {}),
-          id: (user as any).id,
-        } as any,
-      } as any;
+          id: (user as { id: string }).id,
+        },
+      };
     },
   },
   pages: {
