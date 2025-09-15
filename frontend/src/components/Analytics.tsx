@@ -5,8 +5,8 @@ import { useEffect } from "react";
 
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
   }
 }
 
@@ -14,14 +14,14 @@ export default function Analytics() {
   const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.gtag) {
+    if (typeof window !== "undefined" && window.gtag && GA_TRACKING_ID) {
       // Track page views
       window.gtag("config", GA_TRACKING_ID, {
         page_title: document.title,
         page_location: window.location.href,
       });
     }
-  }, []);
+  }, [GA_TRACKING_ID]);
 
   if (!GA_TRACKING_ID) {
     return null;
@@ -53,7 +53,16 @@ export default function Analytics() {
 }
 
 // Core Web Vitals monitoring
-export function reportWebVitals(metric: any) {
+interface WebVitalMetric {
+  name: string;
+  value: number;
+  id: string;
+  delta: number;
+  rating: "good" | "needs-improvement" | "poor";
+  navigationType: string;
+}
+
+export function reportWebVitals(metric: WebVitalMetric) {
   if (typeof window !== "undefined" && window.gtag) {
     window.gtag("event", metric.name, {
       event_category: "Web Vitals",

@@ -3,22 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-// Hook to detect mobile devices
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-  
-  return isMobile;
-};
 
 type Props = {
   src: string;
@@ -80,7 +64,6 @@ export default function Thumbnail({ src, alt, className, projectName = "Portfoli
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-  const isMobile = useIsMobile();
 
   const handleError = () => {
     // Try different approaches before falling back to dynamic thumbnail

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from "web-vitals";
+import { onCLS, onFCP, onLCP, onTTFB } from "web-vitals";
 
 interface WebVitalMetric {
   name: string;
@@ -16,16 +16,15 @@ export default function WebVitalsPage() {
   const [metrics, setMetrics] = useState<WebVitalMetric[]>([]);
 
   useEffect(() => {
-    const handleMetric = (metric: any) => {
+    const handleMetric = (metric: WebVitalMetric) => {
       setMetrics(prev => [...prev, metric]);
     };
 
     // Measure Core Web Vitals
-    getCLS(handleMetric);
-    getFID(handleMetric);
-    getFCP(handleMetric);
-    getLCP(handleMetric);
-    getTTFB(handleMetric);
+    onCLS(handleMetric);
+    onFCP(handleMetric);
+    onLCP(handleMetric);
+    onTTFB(handleMetric);
   }, []);
 
   const getRatingColor = (rating: string) => {
@@ -65,7 +64,7 @@ export default function WebVitalsPage() {
           {/* Performance Overview */}
           <div className="bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 p-6">
             <h2 className="text-xl font-semibold mb-4">Performance Overview</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                 <div className="text-2xl font-bold text-blue-600">LCP</div>
                 <div className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -76,12 +75,12 @@ export default function WebVitalsPage() {
                 </div>
               </div>
               <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">FID</div>
+                <div className="text-2xl font-bold text-green-600">FCP</div>
                 <div className="text-sm text-neutral-600 dark:text-neutral-400">
-                  First Input Delay
+                  First Contentful Paint
                 </div>
                 <div className="text-xs mt-1">
-                  Good: &lt;100ms | Needs Improvement: 100-300ms | Poor: &gt;300ms
+                  Good: &lt;1.8s | Needs Improvement: 1.8-3s | Poor: &gt;3s
                 </div>
               </div>
               <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
@@ -91,6 +90,15 @@ export default function WebVitalsPage() {
                 </div>
                 <div className="text-xs mt-1">
                   Good: &lt;0.1 | Needs Improvement: 0.1-0.25 | Poor: &gt;0.25
+                </div>
+              </div>
+              <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                <div className="text-2xl font-bold text-orange-600">TTFB</div>
+                <div className="text-sm text-neutral-600 dark:text-neutral-400">
+                  Time to First Byte
+                </div>
+                <div className="text-xs mt-1">
+                  Good: &lt;800ms | Needs Improvement: 800-1800ms | Poor: &gt;1800ms
                 </div>
               </div>
             </div>
@@ -157,11 +165,12 @@ export default function WebVitalsPage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-medium mb-2">FID Optimization</h3>
+                <h3 className="font-medium mb-2">FCP Optimization</h3>
                 <ul className="space-y-1 text-neutral-700 dark:text-neutral-300">
-                  <li>• Minimize JavaScript execution time</li>
-                  <li>• Use code splitting and dynamic imports</li>
-                  <li>• Optimize third-party scripts</li>
+                  <li>• Optimize critical rendering path</li>
+                  <li>• Minimize render-blocking resources</li>
+                  <li>• Use efficient CSS selectors</li>
+                  <li>• Optimize server response times</li>
                 </ul>
               </div>
               <div>
@@ -173,10 +182,11 @@ export default function WebVitalsPage() {
                 </ul>
               </div>
               <div>
-                <h3 className="font-medium mb-2">General Tips</h3>
+                <h3 className="font-medium mb-2">TTFB Optimization</h3>
                 <ul className="space-y-1 text-neutral-700 dark:text-neutral-300">
-                  <li>• Enable gzip compression</li>
+                  <li>• Optimize server response times</li>
                   <li>• Use a CDN for static assets</li>
+                  <li>• Enable gzip compression</li>
                   <li>• Implement proper caching strategies</li>
                 </ul>
               </div>
