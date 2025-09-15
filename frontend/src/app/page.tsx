@@ -39,14 +39,54 @@ type ExternalProject = {
 };
 
 const projects: ExternalProject[] = [
-  { name: "E‑Commerce", tagline: "Shop with cart & checkout", category: "Commerce", href: "https://myduka-beta.vercel.app" },
-  { name: "Service Delivery", tagline: "Bookings, quotes, jobs", category: "Services", href: "https://saka-kazi.vercel.app" },
-  { name: "Teen Chat Room", tagline: "Realtime chat with safety", category: "Social", href: "https://teenzoom2-mvp.up.railway.app" },
-  { name: "Service Delivery (Water Maji)", tagline: "On‑demand water delivery", category: "Services", href: "https://watermajifrontend-production.up.railway.app" },
-  { name: "Crypto & AI Bot Trading", tagline: "Automated trading assistant", category: "FinTech", href: "https://trade-machine.vercel.app" },
-  { name: "Payment Gateway", tagline: "Multi‑rails payments demo", category: "Payments", href: "https://gatenjia-frontend-production.up.railway.app" },
-  { name: "Content Creators USSD", tagline: "USSD & autopay flows", category: "Content", href: "https://ussd-autopay.vercel.app" },
-  { name: "Events & Tickets", tagline: "Host, RSVP, ticketing", category: "Events", href: "https://myduka-beta.vercel.app" },
+  { 
+    name: "E‑Commerce Platform", 
+    tagline: "Full-stack e-commerce with cart, checkout, payments, and admin dashboard. Built with Next.js, TypeScript, MongoDB, and Stripe integration.", 
+    category: "Commerce", 
+    href: "https://myduka-beta.vercel.app" 
+  },
+  { 
+    name: "Service Delivery Platform", 
+    tagline: "On-demand service booking system with real-time tracking, geolocation, and automated matching. Features React, Node.js, and WebSocket integration.", 
+    category: "Services", 
+    href: "https://saka-kazi.vercel.app" 
+  },
+  { 
+    name: "Teen Chat Room", 
+    tagline: "Secure real-time chat application with content moderation, user authentication, and safety features. Built with Socket.io, Express.js, and MongoDB.", 
+    category: "Social", 
+    href: "https://teenzoom2-mvp.up.railway.app" 
+  },
+  { 
+    name: "Water Delivery System", 
+    tagline: "On-demand water delivery platform with GPS tracking, payment integration, and driver management. Features React Native, Node.js, and M-Pesa integration.", 
+    category: "Services", 
+    href: "https://watermajifrontend-production.up.railway.app" 
+  },
+  { 
+    name: "Crypto Trading Bot", 
+    tagline: "AI-powered cryptocurrency trading assistant with automated strategies, real-time market analysis, and portfolio management. Built with Python, React, and WebSocket APIs.", 
+    category: "FinTech", 
+    href: "https://trade-machine.vercel.app" 
+  },
+  { 
+    name: "Payment Gateway", 
+    tagline: "Multi-rail payment processing system supporting Paystack, M-Pesa, and international cards. Features React, Node.js, and comprehensive payment analytics.", 
+    category: "Payments", 
+    href: "https://gatenjia-frontend-production.up.railway.app" 
+  },
+  { 
+    name: "USSD Content Platform", 
+    tagline: "USSD-based content delivery system with autopay integration for mobile users. Built with Node.js, Africa's Talking API, and MySQL database.", 
+    category: "Content", 
+    href: "https://ussd-autopay.vercel.app" 
+  },
+  { 
+    name: "Events & Ticketing", 
+    tagline: "Event management platform with ticketing, RSVP, payment processing, and attendee management. Features Next.js, TypeScript, and real-time updates.", 
+    category: "Events", 
+    href: "https://myduka-beta.vercel.app" 
+  },
 ];
 
 export default function Home() {
@@ -59,6 +99,7 @@ export default function Home() {
         </Link>
         <nav className="hidden sm:flex items-center gap-5 text-sm" role="navigation" aria-label="Main navigation">
           <Link href="#projects" className="opacity-80 hover:opacity-100">Projects</Link>
+          <Link href="/web-vitals" className="opacity-80 hover:opacity-100">Performance</Link>
           <Link href="#contact" className="opacity-80 hover:opacity-100">Contact</Link>
           <Link href="/signin" className="px-3 py-1.5 rounded-full bg-black text-white dark:bg-white dark:text-black">Sign in</Link>
         </nav>
