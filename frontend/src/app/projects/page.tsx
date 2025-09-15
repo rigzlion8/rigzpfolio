@@ -17,7 +17,7 @@ export default function ProjectsPage() {
       <h1 className="text-2xl sm:text-3xl font-semibold">All Projects</h1>
       <div className="mt-6 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {projects.map((p) => {
-          const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=960`;
+          const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=960&viewport.deviceScaleFactor=1&screenshot.type=png&screenshot.quality=80&screenshot.overlay.browser=dark&screenshot.overlay.browser.gap=20`;
           return (
             <a
               key={`${p.href}-${p.name}`}

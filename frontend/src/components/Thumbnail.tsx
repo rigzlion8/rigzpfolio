@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 type Props = {
@@ -61,20 +61,65 @@ const generateDynamicThumbnail = (projectName: string, category: string) => {
 export default function Thumbnail({ src, alt, className, projectName = "Portfolio", category = "Default" }: Props) {
   const [currentSrc, setCurrentSrc] = useState(src);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  // Alternative screenshot services to try
+  const getAlternativeScreenshot = (originalUrl: string) => {
+    const url = new URL(originalUrl);
+    const targetUrl = url.searchParams.get('url');
+    if (!targetUrl) return null;
+    
+    // Try different screenshot services
+    const services = [
+      `https://api.microlink.io/?url=${encodeURIComponent(targetUrl)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=960&viewport.deviceScaleFactor=1&screenshot.type=png&screenshot.quality=80`,
+      `https://screenshotapi.net/api/v1/screenshot?url=${encodeURIComponent(targetUrl)}&width=1280&height=960&format=png&full_page=false`,
+      `https://htmlcsstoimage.com/demo?url=${encodeURIComponent(targetUrl)}&width=1280&height=960`
+    ];
+    
+    return services[retryCount] || null;
+  };
 
   const handleError = () => {
-    setCurrentSrc(generateDynamicThumbnail(projectName, category));
-    setIsLoading(false);
+    const alternativeSrc = getAlternativeScreenshot(src);
+    
+    if (alternativeSrc && retryCount < 2) {
+      // Try alternative screenshot service
+      setRetryCount(prev => prev + 1);
+      setCurrentSrc(alternativeSrc);
+    } else {
+      // Fall back to dynamic thumbnail
+      setHasError(true);
+      setCurrentSrc(generateDynamicThumbnail(projectName, category));
+      setIsLoading(false);
+    }
   };
 
   const handleLoad = () => {
     setIsLoading(false);
   };
 
+  // Add a timeout to fallback to dynamic thumbnail if remote takes too long
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isLoading && !hasError) {
+        setHasError(true);
+        setCurrentSrc(generateDynamicThumbnail(projectName, category));
+        setIsLoading(false);
+      }
+    }, 8000); // 8 second timeout to allow for retries
+
+    return () => clearTimeout(timer);
+  }, [isLoading, hasError, projectName, category, retryCount]);
+
   return (
     <div className="relative w-full h-full">
       {isLoading && (
-        <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-700 animate-pulse" />
+        <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-700 animate-pulse flex items-center justify-center">
+          <div className="text-xs opacity-60">
+            {retryCount > 0 ? `Retrying... (${retryCount}/2)` : 'Loading screenshot...'}
+          </div>
+        </div>
       )}
       <Image
         src={currentSrc}
@@ -85,7 +130,14 @@ export default function Thumbnail({ src, alt, className, projectName = "Portfoli
         onLoad={handleLoad}
         priority={false}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        unoptimized={currentSrc.startsWith('data:')} // Don't optimize data URLs
       />
+      {/* Debug info - remove in production */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="absolute top-1 left-1 text-xs bg-black/50 text-white p-1 rounded text-[10px]">
+          {hasError ? 'Dynamic' : retryCount > 0 ? `Retry ${retryCount}` : 'Screenshot'}
+        </div>
+      )}
     </div>
   );
 }
