@@ -66,7 +66,7 @@ export default function Home() {
           </div>
           <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
             {projects.map((p) => {
-              const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=960&viewport.deviceScaleFactor=1&screenshot.type=png&screenshot.quality=80&screenshot.overlay.browser=dark&screenshot.overlay.browser.gap=20`;
+              const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url`;
               return (
                 <a
                   key={`${p.href}-${p.name}`}
