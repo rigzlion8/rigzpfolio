@@ -3,6 +3,23 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
+// Hook to detect mobile devices
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  return isMobile;
+};
+
 type Props = {
   src: string;
   alt: string;
@@ -62,9 +79,32 @@ export default function Thumbnail({ src, alt, className, projectName = "Portfoli
   const [currentSrc, setCurrentSrc] = useState(src);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+  const isMobile = useIsMobile();
 
   const handleError = () => {
-    // Immediately fall back to dynamic thumbnail
+    // Try different approaches before falling back to dynamic thumbnail
+    if (retryCount === 0) {
+      setRetryCount(1);
+      // Try a simpler Microlink URL without extra parameters
+      const simpleUrl = src.replace(/&[^&]*viewport[^&]*/g, '').replace(/&[^&]*screenshot[^&]*quality[^&]*/g, '');
+      setCurrentSrc(simpleUrl);
+      return;
+    }
+    
+    if (retryCount === 1) {
+      setRetryCount(2);
+      // Try with a different screenshot service for desktop
+      const url = new URL(src);
+      const targetUrl = url.searchParams.get('url');
+      if (targetUrl) {
+        const alternativeUrl = `https://htmlcsstoimage.com/demo?url=${encodeURIComponent(targetUrl)}`;
+        setCurrentSrc(alternativeUrl);
+        return;
+      }
+    }
+    
+    // Final fallback to dynamic thumbnail
     setHasError(true);
     setCurrentSrc(generateDynamicThumbnail(projectName, category));
     setIsLoading(false);
@@ -76,13 +116,14 @@ export default function Thumbnail({ src, alt, className, projectName = "Portfoli
 
   // Add a timeout to fallback to dynamic thumbnail if remote takes too long
   useEffect(() => {
+    const timeout = 6000; // 6 seconds for both mobile and desktop
     const timer = setTimeout(() => {
       if (isLoading && !hasError) {
         setHasError(true);
         setCurrentSrc(generateDynamicThumbnail(projectName, category));
         setIsLoading(false);
       }
-    }, 1500); // 1.5 second timeout for faster fallback
+    }, timeout);
 
     return () => clearTimeout(timer);
   }, [isLoading, hasError, projectName, category]);
@@ -91,7 +132,11 @@ export default function Thumbnail({ src, alt, className, projectName = "Portfoli
     <div className="relative w-full h-full">
       {isLoading && (
         <div className="absolute inset-0 bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-700 animate-pulse flex items-center justify-center">
-          <div className="text-xs opacity-60">Loading...</div>
+          <div className="text-xs opacity-60 text-center">
+            {retryCount === 0 ? 'Loading screenshot...' : 
+             retryCount === 1 ? 'Retrying...' : 
+             'Trying alternative...'}
+          </div>
         </div>
       )}
       <Image
@@ -108,7 +153,10 @@ export default function Thumbnail({ src, alt, className, projectName = "Portfoli
       {/* Debug info - remove in production */}
       {process.env.NODE_ENV === 'development' && (
         <div className="absolute top-1 left-1 text-xs bg-black/50 text-white p-1 rounded text-[10px]">
-          {hasError ? 'Dynamic' : 'Screenshot'}
+          {hasError ? 'Dynamic' : 
+           retryCount === 0 ? 'Screenshot' :
+           retryCount === 1 ? 'Retry 1' :
+           retryCount === 2 ? 'Retry 2' : 'Unknown'}
         </div>
       )}
     </div>
