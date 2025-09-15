@@ -39,12 +39,12 @@ const projectDetails = {
   },
 } as const;
 
-export default function ProjectPage({
+export default async function ProjectPage({
   params,
 }: {
-  params: { slug: keyof typeof projectDetails };
+  params: Promise<{ slug: keyof typeof projectDetails }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
   const details = projectDetails[slug];
 
   return (
