@@ -2,10 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import { MongoClient } from "mongodb";
-
-const client = new MongoClient(process.env.MONGODB_URI!);
-const clientPromise = client.connect();
+import clientPromise from "@/lib/mongodb";
 
 const handler = NextAuth({
   adapter: MongoDBAdapter(clientPromise),
@@ -21,10 +18,13 @@ const handler = NextAuth({
   ],
   callbacks: {
     session: async ({ session, user }) => {
-      if (session?.user) {
-        session.user.id = user.id;
-      }
-      return session;
+      return {
+        ...session,
+        user: {
+          ...(session.user || {}),
+          id: (user as any).id,
+        } as any,
+      } as any;
     },
   },
   pages: {

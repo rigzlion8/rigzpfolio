@@ -1,22 +1,21 @@
 import Link from "next/link";
 
-type Project = {
-  slug: string;
+type ExternalProject = {
   name: string;
   tagline: string;
   category: string;
-  cover: string;
+  href: string;
 };
 
-const projects: Project[] = [
-  { slug: "ecommerce", name: "E‑Commerce", tagline: "Modern shop with cart & checkout", category: "Commerce", cover: "/covers/ecommerce.jpg" },
-  { slug: "service-delivery", name: "Service Delivery", tagline: "Bookings, quotes, and jobs", category: "Services", cover: "/covers/service.jpg" },
-  { slug: "teen-chat", name: "Teen Chat Room", tagline: "Realtime chat with safety filters", category: "Social", cover: "/covers/chat.jpg" },
-  { slug: "learning", name: "Learning Portal", tagline: "Courses, progress, certificates", category: "EdTech", cover: "/covers/learn.jpg" },
-  { slug: "events", name: "Events & Tickets", tagline: "Host, RSVP, and ticketing", category: "Events", cover: "/covers/events.jpg" },
-  { slug: "blog", name: "Content Hub", tagline: "MDX blog with search", category: "Content", cover: "/covers/blog.jpg" },
-  { slug: "analytics", name: "Analytics Dashboard", tagline: "KPIs, charts, and alerts", category: "Data", cover: "/covers/analytics.jpg" },
-  { slug: "gallery", name: "Media Gallery", tagline: "Photos & videos upload", category: "Media", cover: "/covers/gallery.jpg" },
+const projects: ExternalProject[] = [
+  { name: "E‑Commerce", tagline: "Shop with cart & checkout", category: "Commerce", href: "https://myduka-beta.vercel.app" },
+  { name: "Service Delivery", tagline: "Bookings, quotes, jobs", category: "Services", href: "https://saka-kazi.vercel.app" },
+  { name: "Teen Chat Room", tagline: "Realtime chat with safety", category: "Social", href: "https://teenzoom2-mvp.up.railway.app" },
+  { name: "Service Delivery (Water Maji)", tagline: "On‑demand water delivery", category: "Services", href: "https://watermajifrontend-production.up.railway.app" },
+  { name: "Crypto & AI Bot Trading", tagline: "Automated trading assistant", category: "FinTech", href: "https://trade-machine.vercel.app" },
+  { name: "Payment Gateway", tagline: "Multi‑rails payments demo", category: "Payments", href: "https://gatenjia-frontend-production.up.railway.app" },
+  { name: "Content Creators USSD", tagline: "USSD & autopay flows", category: "Content", href: "https://ussd-autopay.vercel.app" },
+  { name: "Events & Tickets", tagline: "Host, RSVP, ticketing", category: "Events", href: "https://myduka-beta.vercel.app" },
 ];
 
 export default function Home() {
@@ -65,20 +64,32 @@ export default function Home() {
             <Link href="/projects" className="text-sm opacity-80 hover:opacity-100">View all</Link>
           </div>
           <div className="mt-4 grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {projects.map((p) => (
-              <Link
-                key={p.slug}
-                href={`/projects/${p.slug}`}
-                className="group rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 hover:shadow-sm transition-shadow"
-              >
-                <div className="aspect-[4/3] bg-neutral-100 dark:bg-neutral-900" />
-                <div className="p-3">
-                  <div className="text-xs uppercase tracking-wide opacity-60">{p.category}</div>
-                  <div className="mt-0.5 font-medium">{p.name}</div>
-                  <div className="text-sm opacity-70 line-clamp-2">{p.tagline}</div>
-                </div>
-              </Link>
-            ))}
+            {projects.map((p) => {
+              const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url&viewport.width=1280&viewport.height=960`;
+              return (
+                <a
+                  key={`${p.href}-${p.name}`}
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 hover:shadow-md transition-shadow bg-white dark:bg-neutral-950"
+                >
+                  <div className="aspect-[4/3] bg-neutral-100 dark:bg-neutral-900 overflow-hidden">
+                    <img
+                      src={thumb}
+                      alt={`${p.name} thumbnail`}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-3">
+                    <div className="text-xs uppercase tracking-wide opacity-60">{p.category}</div>
+                    <div className="mt-0.5 font-medium">{p.name}</div>
+                    <div className="text-sm opacity-70 line-clamp-2">{p.tagline}</div>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </section>
       </main>
