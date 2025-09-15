@@ -1,5 +1,35 @@
 import Link from "next/link";
 import Thumbnail from "@/components/Thumbnail";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Software Development Portfolio - Real Projects & Applications",
+  description: "Explore 8+ production-ready applications including e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, and analytics dashboards. Built with modern technologies like Next.js, TypeScript, and cloud-native architectures.",
+  keywords: [
+    "software developer portfolio",
+    "web applications",
+    "e-commerce development",
+    "service delivery platform",
+    "chat application",
+    "payment gateway",
+    "analytics dashboard",
+    "Next.js projects",
+    "TypeScript development",
+    "cloud applications",
+    "full-stack developer",
+    "Kenya software developer"
+  ],
+  openGraph: {
+    title: "Software Development Portfolio - Real Projects & Applications",
+    description: "Explore 8+ production-ready applications including e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, and analytics dashboards.",
+    type: "website",
+    url: "https://maishatech.co.ke",
+  },
+  twitter: {
+    title: "Software Development Portfolio - Real Projects & Applications",
+    description: "Explore 8+ production-ready applications including e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, and analytics dashboards.",
+  },
+};
 
 type ExternalProject = {
   name: string;
@@ -22,21 +52,21 @@ const projects: ExternalProject[] = [
 export default function Home() {
   return (
     <div className="min-h-dvh bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50">
-      <header className="px-4 sm:px-6 py-5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="size-8 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500" />
+      <header className="px-4 sm:px-6 py-5 flex items-center justify-between" role="banner">
+        <Link href="/" className="flex items-center gap-2" aria-label="MaishaTech Home">
+          <div className="size-8 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500" aria-hidden="true" />
           <span className="font-semibold">MaishaTech</span>
-        </div>
-        <nav className="hidden sm:flex items-center gap-5 text-sm">
+        </Link>
+        <nav className="hidden sm:flex items-center gap-5 text-sm" role="navigation" aria-label="Main navigation">
           <Link href="#projects" className="opacity-80 hover:opacity-100">Projects</Link>
           <Link href="#contact" className="opacity-80 hover:opacity-100">Contact</Link>
           <Link href="/signin" className="px-3 py-1.5 rounded-full bg-black text-white dark:bg-white dark:text-black">Sign in</Link>
         </nav>
       </header>
 
-      <main className="px-4 sm:px-6 pb-16">
-        <section className="py-6 sm:py-10">
-          <h1 className="text-3xl sm:text-5xl font-bold tracking-tight">
+      <main className="px-4 sm:px-6 pb-16" role="main">
+        <section className="py-6 sm:py-10" aria-labelledby="hero-title">
+          <h1 id="hero-title" className="text-3xl sm:text-5xl font-bold tracking-tight">
             Software that helps businesses grow
           </h1>
           <p className="mt-3 sm:mt-4 text-sm sm:text-base text-neutral-600 dark:text-neutral-300 max-w-xl">
@@ -59,22 +89,23 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="projects" className="mt-6 sm:mt-10">
+        <section id="projects" className="mt-6 sm:mt-10" aria-labelledby="projects-title">
           <div className="flex items-baseline justify-between">
-            <h2 className="text-lg sm:text-2xl font-semibold">Featured Work</h2>
+            <h2 id="projects-title" className="text-lg sm:text-2xl font-semibold">Featured Work</h2>
             <Link href="/projects" className="text-sm opacity-80 hover:opacity-100">View all</Link>
           </div>
-          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6" role="list" aria-label="Featured projects">
             {projects.map((p) => {
               const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url`;
               return (
-                <a
-                  key={`${p.href}-${p.name}`}
-                  href={p.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 hover:shadow-xl transition-all bg-white dark:bg-neutral-950"
-                >
+                <article key={`${p.href}-${p.name}`} role="listitem" className="group rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 hover:shadow-xl transition-all bg-white dark:bg-neutral-950">
+                  <a
+                    href={p.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                    aria-label={`View ${p.name} project - ${p.tagline}`}
+                  >
                   <div className="aspect-[16/10] bg-neutral-100 dark:bg-neutral-900 overflow-hidden relative">
                     <Thumbnail
                       src={thumb}
@@ -85,12 +116,13 @@ export default function Home() {
                     />
                     <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   </div>
-                  <div className="p-4">
-                    <div className="text-xs uppercase tracking-wide opacity-60 mb-1">{p.category}</div>
-                    <div className="text-lg font-semibold mb-2">{p.name}</div>
-                    <div className="text-sm opacity-70 line-clamp-2">{p.tagline}</div>
-                  </div>
-                </a>
+                    <div className="p-4">
+                      <div className="text-xs uppercase tracking-wide opacity-60 mb-1">{p.category}</div>
+                      <h3 className="text-lg font-semibold mb-2">{p.name}</h3>
+                      <p className="text-sm opacity-70 line-clamp-2">{p.tagline}</p>
+                    </div>
+                  </a>
+                </article>
               );
             })}
           </div>

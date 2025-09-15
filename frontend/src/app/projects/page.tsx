@@ -1,4 +1,28 @@
 import Thumbnail from "@/components/Thumbnail";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "All Projects - Software Development Portfolio",
+  description: "Complete collection of software development projects including e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, analytics dashboards, and more. Built with modern web technologies.",
+  keywords: [
+    "software projects",
+    "web development portfolio",
+    "e-commerce applications",
+    "service delivery platforms",
+    "chat applications",
+    "payment gateways",
+    "analytics dashboards",
+    "Next.js projects",
+    "TypeScript development",
+    "React applications"
+  ],
+  openGraph: {
+    title: "All Projects - Software Development Portfolio",
+    description: "Complete collection of software development projects including e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, analytics dashboards, and more.",
+    type: "website",
+    url: "https://maishatech.co.ke/projects",
+  },
+};
 
 const projects = [
   { name: "E‑Commerce", href: "https://myduka-beta.vercel.app", category: "Commerce" },
