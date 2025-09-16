@@ -1,7 +1,6 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect } from "react";
 
 declare global {
   interface Window {
@@ -12,16 +11,6 @@ declare global {
 
 export default function Analytics() {
   const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID;
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.gtag && GA_TRACKING_ID) {
-      // Track page views
-      window.gtag("config", GA_TRACKING_ID, {
-        page_title: document.title,
-        page_location: window.location.href,
-      });
-    }
-  }, [GA_TRACKING_ID]);
 
   if (!GA_TRACKING_ID) {
     return null;
@@ -41,10 +30,7 @@ export default function Analytics() {
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${GA_TRACKING_ID}', {
-              page_title: document.title,
-              page_location: window.location.href,
-            });
+            gtag('config', '${GA_TRACKING_ID}');
           `,
         }}
       />
