@@ -24,8 +24,9 @@ export default function SignInPage() {
     try {
       const result = await signIn("google", { 
         callbackUrl: "/admin",
-        redirect: false 
+        redirect: true 
       });
+      // If redirect is true, this won't execute, but keeping for fallback
       if (result?.error) {
         setError("Google sign-in failed. Please try again.");
       }
@@ -71,6 +72,15 @@ export default function SignInPage() {
         {error && (
           <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
             <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+          </div>
+        )}
+
+        {loading && (
+          <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            <div className="flex items-center gap-3">
+              <div className="size-6 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 animate-pulse" />
+              <p className="text-sm text-blue-600 dark:text-blue-400">Signing you in...</p>
+            </div>
           </div>
         )}
 

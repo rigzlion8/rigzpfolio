@@ -100,7 +100,7 @@ export default function Home() {
         <nav className="hidden sm:flex items-center gap-5 text-sm" role="navigation" aria-label="Main navigation">
           <Link href="#projects" className="opacity-80 hover:opacity-100">Projects</Link>
           <Link href="/web-vitals" className="opacity-80 hover:opacity-100">Performance</Link>
-          <Link href="#contact" className="opacity-80 hover:opacity-100">Contact</Link>
+          <Link href="/contact" className="opacity-80 hover:opacity-100">Contact</Link>
           <Link href="/signin" className="px-3 py-1.5 rounded-full bg-black text-white dark:bg-white dark:text-black">Sign in</Link>
         </nav>
       </header>

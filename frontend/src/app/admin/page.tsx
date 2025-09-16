@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Project {
   _id: string;
@@ -69,7 +70,18 @@ export default function AdminPage() {
           <span className="font-semibold">MaishaTech Admin</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-sm opacity-70">Welcome, {session.user?.name}</span>
+          <div className="flex items-center gap-3">
+            {session.user?.image && (
+              <Image
+                src={session.user.image}
+                alt={session.user.name || "User"}
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-700"
+              />
+            )}
+            <span className="text-sm opacity-70">Welcome, {session.user?.name}</span>
+          </div>
           <button
             onClick={() => signOut()}
             className="px-3 py-1.5 text-sm rounded-full border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900"

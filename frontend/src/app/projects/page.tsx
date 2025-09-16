@@ -133,7 +133,7 @@ export default function ProjectsPage() {
               </article>
             );
           })}
-        </div>
+      </div>
     </main>
   );
 }

@@ -142,7 +142,7 @@ export default function RootLayout({
       >
         <Analytics />
         <Providers>
-          {children}
+        {children}
         </Providers>
       </body>
     </html>

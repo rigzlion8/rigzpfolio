@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function NewProjectPage() {
   const { data: session, status } = useSession();
@@ -79,12 +80,26 @@ export default function NewProjectPage() {
           <div className="size-8 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500" />
           <span className="font-semibold">MaishaTech Admin</span>
         </div>
-        <Link
-          href="/admin"
-          className="px-3 py-1.5 text-sm rounded-full border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900"
-        >
-          ← Back to Projects
-        </Link>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            {session.user?.image && (
+              <Image
+                src={session.user.image}
+                alt={session.user.name || "User"}
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-700"
+              />
+            )}
+            <span className="text-sm opacity-70">{session.user?.name}</span>
+          </div>
+          <Link
+            href="/admin"
+            className="px-3 py-1.5 text-sm rounded-full border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900"
+          >
+            ← Back to Projects
+          </Link>
+        </div>
       </header>
 
       <main className="px-4 sm:px-6 py-8 max-w-2xl mx-auto">

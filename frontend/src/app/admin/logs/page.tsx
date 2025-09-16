@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
 
@@ -17,6 +19,7 @@ type Log = {
 };
 
 export default function LogsPage() {
+  const { data: session } = useSession();
   const [logs, setLogs] = useState<Log[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -48,7 +51,21 @@ export default function LogsPage() {
           <div className="size-8 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500" />
           <span className="font-semibold">Request Logs</span>
         </div>
-        <Link href="/admin" className="text-sm opacity-80 hover:opacity-100">← Back to Admin</Link>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            {session?.user?.image && (
+              <Image
+                src={session.user.image}
+                alt={session.user.name || "User"}
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-700"
+              />
+            )}
+            <span className="text-sm opacity-70">{session?.user?.name}</span>
+          </div>
+          <Link href="/admin" className="text-sm opacity-80 hover:opacity-100">← Back to Admin</Link>
+        </div>
       </header>
 
       <main className="px-4 sm:px-6 py-6">
