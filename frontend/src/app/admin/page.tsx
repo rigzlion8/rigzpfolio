@@ -139,6 +139,13 @@ export default function AdminPage() {
                   >
                     View
                   </Link>
+                  <button
+                    disabled
+                    className="px-3 py-1.5 text-xs rounded-full bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300 cursor-not-allowed opacity-50"
+                    title="Delete functionality coming soon"
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>

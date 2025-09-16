@@ -6,10 +6,26 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function NewProjectPage() {
+interface Project {
+  _id: string;
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  category: string;
+  cover: string;
+  technologies?: string;
+  githubUrl?: string;
+  liveUrl?: string;
+  isPublished: boolean;
+  order: number;
+}
+
+export default function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [project, setProject] = useState<Project | null>(null);
   const [formData, setFormData] = useState({
     name: "",
     tagline: "",
@@ -28,13 +44,44 @@ export default function NewProjectPage() {
     }
   }, [status, router]);
 
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const resolvedParams = await params;
+        const response = await fetch(`/api/projects/${resolvedParams.id}`);
+        if (response.ok) {
+          const projectData = await response.json();
+          setProject(projectData);
+          setFormData({
+            name: projectData.name || "",
+            tagline: projectData.tagline || "",
+            description: projectData.description || "",
+            category: projectData.category || "e-commerce",
+            cover: projectData.cover || "",
+            technologies: projectData.technologies || "",
+            githubUrl: projectData.githubUrl || "",
+            liveUrl: projectData.liveUrl || "",
+            isPublished: projectData.isPublished || false,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching project:", error);
+      }
+    };
+
+    if (status === "authenticated") {
+      fetchProject();
+    }
+  }, [status, params]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await fetch("/api/projects", {
-        method: "POST",
+      const resolvedParams = await params;
+      const response = await fetch(`/api/projects/${resolvedParams.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -44,10 +91,10 @@ export default function NewProjectPage() {
       if (response.ok) {
         router.push("/admin");
       } else {
-        console.error("Failed to create project");
+        console.error("Failed to update project");
       }
     } catch (error) {
-      console.error("Error creating project:", error);
+      console.error("Error updating project:", error);
     } finally {
       setLoading(false);
     }
@@ -74,6 +121,26 @@ export default function NewProjectPage() {
 
   if (!session) {
     return null;
+  }
+
+  if (!project) {
+    return (
+      <div className="min-h-dvh bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-4xl mb-4">📁</div>
+          <h3 className="text-lg font-medium mb-2">Project not found</h3>
+          <p className="text-neutral-600 dark:text-neutral-300 mb-4">
+            The project you&apos;re looking for doesn&apos;t exist.
+          </p>
+          <Link
+            href="/admin"
+            className="px-4 py-2 bg-emerald-600 text-white rounded-lg"
+          >
+            Back to Projects
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -106,7 +173,7 @@ export default function NewProjectPage() {
       </header>
 
       <main className="px-4 sm:px-6 py-8 max-w-2xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-semibold mb-8">Add New Project</h1>
+        <h1 className="text-2xl sm:text-3xl font-semibold mb-8">Edit Project</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -260,7 +327,7 @@ export default function NewProjectPage() {
               disabled={loading}
               className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? "Creating..." : "Create Project"}
+              {loading ? "Updating..." : "Update Project"}
             </button>
             <Link
               href="/admin"
