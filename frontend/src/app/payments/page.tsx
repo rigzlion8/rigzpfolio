@@ -23,6 +23,7 @@ export default function PaymentsPage() {
   });
   const [subscriberData, setSubscriberData] = useState({
     message: "",
+    phoneNumbers: "",
   });
   const [loading, setLoading] = useState("");
   const [result, setResult] = useState<{
@@ -86,10 +87,20 @@ export default function PaymentsPage() {
     e.preventDefault();
     setLoading("subscriber");
     try {
+      // Parse phone numbers if provided
+      const phoneNumbers = subscriberData.phoneNumbers 
+        ? subscriberData.phoneNumbers.split(',').map(num => num.trim())
+        : undefined;
+
+      const payload = {
+        message: subscriberData.message,
+        ...(phoneNumbers && { phoneNumbers })
+      };
+
       const res = await fetch(`${API_BASE}/api/sms/send-to-subscribers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(subscriberData),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       setResult({ type: "Subscriber SMS", data });
@@ -262,9 +273,22 @@ export default function PaymentsPage() {
           <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
             <h2 className="text-lg font-semibold mb-4">Send to Sportstips Subscribers</h2>
             <p className="text-sm text-neutral-600 dark:text-neutral-300 mb-4">
-              Send SMS to all subscribers of shortcode 4700 with keyword &quot;Sportstips&quot;
+              Send SMS to subscribers. Provide phone numbers (comma-separated) or leave empty for instructions.
             </p>
             <form onSubmit={handleSubscriberSms} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Phone Numbers (Optional)</label>
+                <input
+                  type="text"
+                  value={subscriberData.phoneNumbers}
+                  onChange={(e) => setSubscriberData({ ...subscriberData, phoneNumbers: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
+                  placeholder="254708374149, 254712345678, 254700000000"
+                />
+                <p className="text-xs text-neutral-500 mt-1">
+                  Comma-separated phone numbers. Leave empty to see instructions for bulk messaging.
+                </p>
+              </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Message</label>
                 <textarea
