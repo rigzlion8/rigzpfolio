@@ -12,6 +12,26 @@ router.post("/stk-push", async (req, res) => {
         if (!consumerKey || !consumerSecret || !shortcode || !passkey || !callbackUrl) {
             return res.status(500).json({ error: "Missing Mpesa env vars" });
         }
+        // Validate required fields
+        if (!phoneNumber || !amount) {
+            return res.status(400).json({ error: "Phone number and amount are required" });
+        }
+        // Format phone number (remove +254 prefix if present, ensure it starts with 254)
+        let formattedPhone = phoneNumber.replace(/^\+/, '').replace(/^0/, '254');
+        if (!formattedPhone.startsWith('254')) {
+            formattedPhone = '254' + formattedPhone;
+        }
+        // Convert amount to cents (M-Pesa expects amount in cents)
+        const amountInCents = Math.round(Number(amount) * 100);
+        console.log("M-Pesa STK Push Request:", {
+            originalPhone: phoneNumber,
+            formattedPhone,
+            originalAmount: amount,
+            amountInCents,
+            shortcode,
+            reference,
+            description
+        });
         const authResp = await axios.get("https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials", {
             auth: { username: consumerKey, password: consumerSecret },
         });
@@ -26,19 +46,34 @@ router.post("/stk-push", async (req, res) => {
             Password: password,
             Timestamp: timestamp,
             TransactionType: "CustomerPayBillOnline",
-            Amount: Number(amount),
-            PartyA: phoneNumber,
+            Amount: amountInCents,
+            PartyA: formattedPhone,
             PartyB: Number(shortcode),
-            PhoneNumber: phoneNumber,
+            PhoneNumber: formattedPhone,
             CallBackURL: callbackUrl,
             AccountReference: reference || "MaishaTech",
             TransactionDesc: description || "Payment",
         };
-        const resp = await axios.post("https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest", payload, { headers: { Authorization: `Bearer ${accessToken}` } });
+        console.log("M-Pesa Payload:", payload);
+        const resp = await axios.post("https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest", payload, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log("M-Pesa Response:", resp.data);
         return res.json(resp.data);
     }
     catch (err) {
-        return res.status(400).json({ error: err?.response?.data || err?.message || "Mpesa error" });
+        console.error("M-Pesa Error:", {
+            message: err?.message,
+            response: err?.response?.data,
+            status: err?.response?.status
+        });
+        return res.status(400).json({
+            error: err?.response?.data || err?.message || "Mpesa error",
+            details: err?.response?.data
+        });
     }
 });
 router.post("/callback", (_req, res) => {
