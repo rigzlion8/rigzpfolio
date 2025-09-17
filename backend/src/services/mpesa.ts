@@ -8,7 +8,7 @@ router.post("/stk-push", async (req, res) => {
     const { phoneNumber, amount, reference, description } = req.body || {};
     const consumerKey = process.env.MPESA_CONSUMER_KEY;
     const consumerSecret = process.env.MPESA_CONSUMER_SECRET;
-    const shortcode = process.env.MPESA_SHORTCODE;
+		const shortcode = process.env.MPESA_BUSINESS_SHORT_CODE;
     const passkey = process.env.MPESA_PASSKEY;
     const callbackUrl = process.env.MPESA_CALLBACK_URL;
     if (!consumerKey || !consumerSecret || !shortcode || !passkey || !callbackUrl) {
