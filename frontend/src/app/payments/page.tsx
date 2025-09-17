@@ -21,6 +21,9 @@ export default function PaymentsPage() {
     to: "",
     message: "",
   });
+  const [subscriberData, setSubscriberData] = useState({
+    message: "",
+  });
   const [loading, setLoading] = useState("");
   const [result, setResult] = useState<{
     type: string;
@@ -75,6 +78,23 @@ export default function PaymentsPage() {
       setResult({ type: "SMS", data });
     } catch (err) {
       setResult({ type: "SMS", error: err });
+    }
+    setLoading("");
+  };
+
+  const handleSubscriberSms = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading("subscriber");
+    try {
+      const res = await fetch(`${API_BASE}/api/sms/send-to-subscribers`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(subscriberData),
+      });
+      const data = await res.json();
+      setResult({ type: "Subscriber SMS", data });
+    } catch (err) {
+      setResult({ type: "Subscriber SMS", error: err });
     }
     setLoading("");
   };
@@ -203,39 +223,68 @@ export default function PaymentsPage() {
         </div>
 
         {/* SMS */}
-        <div className="mt-8 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
-          <h2 className="text-lg font-semibold mb-4">SMS via Africa&apos;s Talking</h2>
-          <form onSubmit={handleSms} className="space-y-4 max-w-md">
-            <div>
-              <label className="block text-sm font-medium mb-1">Phone Number</label>
-              <input
-                type="tel"
-                value={smsData.to}
-                onChange={(e) => setSmsData({ ...smsData, to: e.target.value })}
-                className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
-                placeholder="254712345678"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Message</label>
-              <textarea
-                value={smsData.message}
-                onChange={(e) => setSmsData({ ...smsData, message: e.target.value })}
-                className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
-                placeholder="Hello from MaishaTech!"
-                rows={3}
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading === "sms"}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
-            >
-              {loading === "sms" ? "Sending..." : "Send SMS"}
-            </button>
-          </form>
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
+            <h2 className="text-lg font-semibold mb-4">SMS via Africa&apos;s Talking</h2>
+            <form onSubmit={handleSms} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Phone Number</label>
+                <input
+                  type="tel"
+                  value={smsData.to}
+                  onChange={(e) => setSmsData({ ...smsData, to: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
+                  placeholder="254712345678"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Message</label>
+                <textarea
+                  value={smsData.message}
+                  onChange={(e) => setSmsData({ ...smsData, message: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
+                  placeholder="Hello from MaishaTech!"
+                  rows={3}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading === "sms"}
+                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
+              >
+                {loading === "sms" ? "Sending..." : "Send SMS"}
+              </button>
+            </form>
+          </div>
+
+          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
+            <h2 className="text-lg font-semibold mb-4">Send to Sportstips Subscribers</h2>
+            <p className="text-sm text-neutral-600 dark:text-neutral-300 mb-4">
+              Send SMS to all subscribers of shortcode 4700 with keyword &quot;Sportstips&quot;
+            </p>
+            <form onSubmit={handleSubscriberSms} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Message</label>
+                <textarea
+                  value={subscriberData.message}
+                  onChange={(e) => setSubscriberData({ ...subscriberData, message: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
+                  placeholder="Today's sports tips: Arsenal vs Chelsea..."
+                  rows={4}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading === "subscriber"}
+                className="w-full px-4 py-2 bg-green-600 text-white rounded-lg disabled:opacity-50"
+              >
+                {loading === "subscriber" ? "Sending..." : "Send to Subscribers"}
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* Results */}
