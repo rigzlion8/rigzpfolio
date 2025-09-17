@@ -26,11 +26,12 @@ export default function PaymentsPage() {
     phoneNumbers: "",
   });
   const [loading, setLoading] = useState("");
-  const [result, setResult] = useState<{
-    type: string;
-    data?: unknown;
-    error?: unknown;
-  } | null>(null);
+  const [results, setResults] = useState<{
+    mpesa?: { data?: unknown; error?: unknown };
+    paystack?: { data?: unknown; error?: unknown };
+    sms?: { data?: unknown; error?: unknown };
+    subscriber?: { data?: unknown; error?: unknown };
+  }>({});
 
   const handlePaystack = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,9 +43,9 @@ export default function PaymentsPage() {
         body: JSON.stringify(paystackData),
       });
       const data = await res.json();
-      setResult({ type: "Paystack", data });
+      setResults(prev => ({ ...prev, paystack: { data } }));
     } catch (err) {
-      setResult({ type: "Paystack", error: err });
+      setResults(prev => ({ ...prev, paystack: { error: err } }));
     }
     setLoading("");
   };
@@ -59,9 +60,9 @@ export default function PaymentsPage() {
         body: JSON.stringify(mpesaData),
       });
       const data = await res.json();
-      setResult({ type: "M-Pesa", data });
+      setResults(prev => ({ ...prev, mpesa: { data } }));
     } catch (err) {
-      setResult({ type: "M-Pesa", error: err });
+      setResults(prev => ({ ...prev, mpesa: { error: err } }));
     }
     setLoading("");
   };
@@ -76,9 +77,9 @@ export default function PaymentsPage() {
         body: JSON.stringify(smsData),
       });
       const data = await res.json();
-      setResult({ type: "SMS", data });
+      setResults(prev => ({ ...prev, sms: { data } }));
     } catch (err) {
-      setResult({ type: "SMS", error: err });
+      setResults(prev => ({ ...prev, sms: { error: err } }));
     }
     setLoading("");
   };
@@ -103,11 +104,39 @@ export default function PaymentsPage() {
         body: JSON.stringify(payload),
       });
       const data = await res.json();
-      setResult({ type: "Subscriber SMS", data });
+      setResults(prev => ({ ...prev, subscriber: { data } }));
     } catch (err) {
-      setResult({ type: "Subscriber SMS", error: err });
+      setResults(prev => ({ ...prev, subscriber: { error: err } }));
     }
     setLoading("");
+  };
+
+  const renderResult = (result: { data?: unknown; error?: unknown } | undefined, type: string) => {
+    if (!result) return null;
+
+    if (result.error) {
+      return (
+        <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+          <h4 className="text-sm font-medium text-red-800 dark:text-red-200 mb-1">{type} Error</h4>
+          <pre className="text-xs text-red-600 dark:text-red-400 whitespace-pre-wrap">
+            {JSON.stringify(result.error, null, 2)}
+          </pre>
+        </div>
+      );
+    }
+
+    if (result.data) {
+      return (
+        <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+          <h4 className="text-sm font-medium text-green-800 dark:text-green-200 mb-1">{type} Success</h4>
+          <pre className="text-xs text-green-600 dark:text-green-400 whitespace-pre-wrap">
+            {JSON.stringify(result.data, null, 2)}
+          </pre>
+        </div>
+      );
+    }
+
+    return null;
   };
 
   return (
@@ -183,6 +212,7 @@ export default function PaymentsPage() {
                 {loading === "mpesa" ? "Processing..." : "Send STK Push"}
               </button>
             </form>
+            {renderResult(results.mpesa, "M-Pesa")}
           </div>
 
           {/* Paystack */}
@@ -230,6 +260,7 @@ export default function PaymentsPage() {
                 {loading === "paystack" ? "Processing..." : "Initialize Payment"}
               </button>
             </form>
+            {renderResult(results.paystack, "Paystack")}
           </div>
         </div>
 
@@ -268,6 +299,7 @@ export default function PaymentsPage() {
                 {loading === "sms" ? "Sending..." : "Send SMS"}
               </button>
             </form>
+            {renderResult(results.sms, "SMS")}
           </div>
 
           <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
@@ -308,18 +340,10 @@ export default function PaymentsPage() {
                 {loading === "subscriber" ? "Sending..." : "Send to Subscribers"}
               </button>
             </form>
+            {renderResult(results.subscriber, "Subscriber SMS")}
           </div>
         </div>
 
-        {/* Results */}
-        {result && (
-          <div className="mt-8 rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
-            <h3 className="text-lg font-semibold mb-4">Result: {result.type}</h3>
-            <pre className="bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg overflow-auto text-sm">
-              {JSON.stringify(result.error || result.data, null, 2)}
-            </pre>
-          </div>
-        )}
       </main>
     </div>
   );
