@@ -40,10 +40,15 @@ router.post("/stk-push", async (req, res) => {
       description
     });
 
-    const authResp = await axios.get("https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials", {
+    // Use sandbox endpoint for testing
+    const authUrl = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
+    console.log("M-Pesa Auth URL:", authUrl);
+    
+    const authResp = await axios.get(authUrl, {
       auth: { username: consumerKey, password: consumerSecret },
     });
     const accessToken = authResp.data.access_token;
+    console.log("M-Pesa Access Token:", accessToken ? "Received" : "Failed");
 
     const timestamp = new Date()
       .toISOString()
@@ -67,8 +72,12 @@ router.post("/stk-push", async (req, res) => {
 
     console.log("M-Pesa Payload:", payload);
 
+    // Use sandbox endpoint for STK push
+    const stkPushUrl = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
+    console.log("M-Pesa STK Push URL:", stkPushUrl);
+    
     const resp = await axios.post(
-      "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+      stkPushUrl,
       payload,
       { 
         headers: { 
@@ -81,15 +90,28 @@ router.post("/stk-push", async (req, res) => {
     console.log("M-Pesa Response:", resp.data);
     return res.json(resp.data);
   } catch (err: any) {
-    console.error("M-Pesa Error:", {
+    console.error("M-Pesa Error Details:", {
       message: err?.message,
-      response: err?.response?.data,
-      status: err?.response?.status
+      status: err?.response?.status,
+      statusText: err?.response?.statusText,
+      responseData: err?.response?.data,
+      responseHeaders: err?.response?.headers,
+      config: {
+        url: err?.config?.url,
+        method: err?.config?.method,
+        headers: err?.config?.headers
+      }
     });
-    return res.status(400).json({ 
+    
+    // Return more detailed error information
+    const errorResponse = {
       error: err?.response?.data || err?.message || "Mpesa error",
+      status: err?.response?.status,
+      statusText: err?.response?.statusText,
       details: err?.response?.data
-    });
+    };
+    
+    return res.status(400).json(errorResponse);
   }
 });
 
