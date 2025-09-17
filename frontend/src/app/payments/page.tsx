@@ -209,7 +209,7 @@ export default function PaymentsPage() {
                 disabled={loading === "mpesa"}
                 className="w-full px-4 py-2 bg-green-600 text-white rounded-lg disabled:opacity-50"
               >
-                {loading === "mpesa" ? "Processing..." : "Send STK Push"}
+                {loading === "mpesa" ? "Check your phone..." : "Send STK Push"}
               </button>
             </form>
             {renderResult(results.mpesa, "M-Pesa")}
