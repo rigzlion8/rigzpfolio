@@ -13,8 +13,7 @@ router.post("/send", async (req, res) => {
 		const results = await at.SMS.send({ 
 			to, 
 			message, 
-			from: process.env.AT_SENDER_ID,
-			callback: process.env.AT_CALLBACK_URL
+			from: process.env.AT_SENDER_ID
 		});
 		return res.json(results);
 	} catch (err: any) {
@@ -110,8 +109,7 @@ router.post("/send-to-subscribers", async (req, res) => {
 		const results = await at.SMS.send({
 			to: `+${shortCode}`,
 			message: `${keyword} ${message}`,
-			from: process.env.AT_SENDER_ID,
-			callback: process.env.AT_CALLBACK_URL
+			from: process.env.AT_SENDER_ID
 		});
 
 		return res.json({
