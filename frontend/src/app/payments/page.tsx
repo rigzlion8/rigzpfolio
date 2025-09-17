@@ -127,53 +127,6 @@ export default function PaymentsPage() {
         </p>
 
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Paystack */}
-          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
-            <h2 className="text-lg font-semibold mb-4">Paystack Payment</h2>
-            <form onSubmit={handlePaystack} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Email</label>
-                <input
-                  type="email"
-                  value={paystackData.email}
-                  onChange={(e) => setPaystackData({ ...paystackData, email: e.target.value })}
-                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
-                  placeholder="customer@example.com"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Amount (KES)</label>
-                <input
-                  type="number"
-                  value={paystackData.amount}
-                  onChange={(e) => setPaystackData({ ...paystackData, amount: e.target.value })}
-                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
-                  placeholder="1000"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Reference</label>
-                <input
-                  type="text"
-                  value={paystackData.reference}
-                  onChange={(e) => setPaystackData({ ...paystackData, reference: e.target.value })}
-                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
-                  placeholder="order_123"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={loading === "paystack"}
-                className="w-full px-4 py-2 bg-emerald-600 text-white rounded-lg disabled:opacity-50"
-              >
-                {loading === "paystack" ? "Processing..." : "Initialize Payment"}
-              </button>
-            </form>
-          </div>
-
           {/* M-Pesa */}
           <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
             <h2 className="text-lg font-semibold mb-4">M-Pesa STK Push</h2>
@@ -228,6 +181,53 @@ export default function PaymentsPage() {
                 className="w-full px-4 py-2 bg-green-600 text-white rounded-lg disabled:opacity-50"
               >
                 {loading === "mpesa" ? "Processing..." : "Send STK Push"}
+              </button>
+            </form>
+          </div>
+
+          {/* Paystack */}
+          <div className="rounded-xl border border-neutral-200 dark:border-neutral-800 p-6">
+            <h2 className="text-lg font-semibold mb-4">Paystack Payment</h2>
+            <form onSubmit={handlePaystack} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Email</label>
+                <input
+                  type="email"
+                  value={paystackData.email}
+                  onChange={(e) => setPaystackData({ ...paystackData, email: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
+                  placeholder="customer@example.com"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Amount (KES)</label>
+                <input
+                  type="number"
+                  value={paystackData.amount}
+                  onChange={(e) => setPaystackData({ ...paystackData, amount: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
+                  placeholder="1000"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Reference</label>
+                <input
+                  type="text"
+                  value={paystackData.reference}
+                  onChange={(e) => setPaystackData({ ...paystackData, reference: e.target.value })}
+                  className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900"
+                  placeholder="order_123"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading === "paystack"}
+                className="w-full px-4 py-2 bg-emerald-600 text-white rounded-lg disabled:opacity-50"
+              >
+                {loading === "paystack" ? "Processing..." : "Initialize Payment"}
               </button>
             </form>
           </div>
