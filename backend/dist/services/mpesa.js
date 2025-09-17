@@ -21,13 +21,14 @@ router.post("/stk-push", async (req, res) => {
         if (!formattedPhone.startsWith('254')) {
             formattedPhone = '254' + formattedPhone;
         }
-        // Convert amount to cents (M-Pesa expects amount in cents)
-        const amountInCents = Math.round(Number(amount) * 100);
+        // For M-Pesa sandbox, use amount as-is (not in cents)
+        // For production, you might need to convert to cents
+        const mpesaAmount = Number(amount);
         console.log("M-Pesa STK Push Request:", {
             originalPhone: phoneNumber,
             formattedPhone,
             originalAmount: amount,
-            amountInCents,
+            mpesaAmount,
             shortcode,
             reference,
             description
@@ -50,7 +51,7 @@ router.post("/stk-push", async (req, res) => {
             Password: password,
             Timestamp: timestamp,
             TransactionType: "CustomerPayBillOnline",
-            Amount: amountInCents,
+            Amount: mpesaAmount,
             PartyA: formattedPhone,
             PartyB: Number(shortcode),
             PhoneNumber: formattedPhone,
