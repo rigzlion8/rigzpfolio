@@ -4,10 +4,12 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Software Development Portfolio - Real Projects & Applications",
-  description: "Explore 8+ production-ready applications including e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, and analytics dashboards. Built with modern technologies like Next.js, TypeScript, and cloud-native architectures.",
+  description: "Explore 10+ production-ready applications including security scanners, education platforms, e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, and analytics dashboards. Built with modern technologies like Next.js, TypeScript, and cloud-native architectures.",
   keywords: [
     "software developer portfolio",
     "web applications",
+    "security scanner",
+    "school management system",
     "e-commerce development",
     "service delivery platform",
     "chat application",
@@ -21,13 +23,13 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Software Development Portfolio - Real Projects & Applications",
-    description: "Explore 8+ production-ready applications including e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, and analytics dashboards.",
+    description: "Explore 10+ production-ready applications including security scanners, education platforms, e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, and analytics dashboards.",
     type: "website",
     url: "https://maishatech.co.ke",
   },
   twitter: {
     title: "Software Development Portfolio - Real Projects & Applications",
-    description: "Explore 8+ production-ready applications including e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, and analytics dashboards.",
+    description: "Explore 10+ production-ready applications including security scanners, education platforms, e-commerce platforms, service delivery systems, real-time chat applications, payment gateways, and analytics dashboards.",
   },
 };
 
@@ -39,6 +41,18 @@ type ExternalProject = {
 };
 
 const projects: ExternalProject[] = [
+  { 
+    name: "CyberTech Security Scanner", 
+    tagline: "Professional security scanning and vulnerability assessment tool for modern web applications. Features vulnerability scanning, SSL/TLS analysis, port scanning, security headers analysis, and detailed PDF reports.", 
+    category: "Security", 
+    href: "https://cybertech-security-scanner.fly.dev" 
+  },
+  { 
+    name: "School App", 
+    tagline: "Complete school management system for educational institutions, featuring student enrollment, attendance tracking, grade management, class scheduling, and parent-teacher communication.", 
+    category: "Education", 
+    href: "https://frontend-still-paper-8364.fly.dev/" 
+  },
   { 
     name: "E‑Commerce Platform", 
     tagline: "Full-stack e-commerce with cart, checkout, payments, and admin dashboard. Built with Next.js, TypeScript, MongoDB, and Stripe integration.", 

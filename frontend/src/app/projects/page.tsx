@@ -26,6 +26,20 @@ export const metadata: Metadata = {
 
 const projects = [
   { 
+    name: "CyberTech Security Scanner", 
+    href: "https://cybertech-security-scanner.fly.dev", 
+    category: "Security",
+    description: "Professional security scanning and vulnerability assessment tool for modern web applications. Features vulnerability scanning, SSL/TLS analysis, port scanning, security headers analysis, password security checks, and database security assessments with detailed PDF reports.",
+    technologies: ["React", "Node.js", "Security", "SSL/TLS", "PDF Reports"]
+  },
+  { 
+    name: "School App", 
+    href: "https://frontend-still-paper-8364.fly.dev/", 
+    category: "Education",
+    description: "Complete school management system for educational institutions, featuring student enrollment, attendance tracking, grade management, class scheduling, parent-teacher communication, and administrative tools for efficient school operations.",
+    technologies: ["Next.js", "TypeScript", "MongoDB", "Real-time", "Dashboard"]
+  },
+  { 
     name: "E‑Commerce Platform", 
     href: "https://myduka-beta.vercel.app", 
     category: "Commerce",
