@@ -3,6 +3,28 @@ import { NextRequest, NextResponse } from "next/server";
 // Mock data for now - in production this would come from your backend
 const mockProjects = [
   {
+    _id: "8",
+    slug: "cybertech-security-scanner",
+    name: "CyberTech Security Scanner",
+    tagline: "Comprehensive security testing & analysis",
+    description: "A professional security scanning and vulnerability assessment tool for modern web applications. Features vulnerability scanning, SSL/TLS analysis, port scanning, security headers analysis, password security checks, and database security assessments with detailed PDF reports.",
+    category: "security",
+    cover: "https://cybertech-security-scanner.fly.dev",
+    isPublished: true,
+    order: 1,
+  },
+  {
+    _id: "9",
+    slug: "school-app",
+    name: "School App",
+    tagline: "Comprehensive school management platform",
+    description: "A complete school management system for educational institutions, featuring student enrollment, attendance tracking, grade management, class scheduling, parent-teacher communication, and administrative tools for efficient school operations.",
+    category: "education",
+    cover: "https://frontend-still-paper-8364.fly.dev/",
+    isPublished: true,
+    order: 2,
+  },
+  {
     _id: "1",
     slug: "myduka-ecommerce",
     name: "MyDuka E-commerce",
@@ -11,7 +33,7 @@ const mockProjects = [
     category: "e-commerce",
     cover: "https://myduka-beta.vercel.app",
     isPublished: true,
-    order: 1,
+    order: 3,
   },
   {
     _id: "2",
@@ -22,7 +44,7 @@ const mockProjects = [
     category: "service-delivery",
     cover: "https://saka-kazi.vercel.app",
     isPublished: true,
-    order: 2,
+    order: 4,
   },
   {
     _id: "3",
@@ -33,7 +55,7 @@ const mockProjects = [
     category: "teen-chat-room",
     cover: "https://teenzoom2-mvp.up.railway.app",
     isPublished: true,
-    order: 3,
+    order: 5,
   },
   {
     _id: "4",
@@ -44,7 +66,7 @@ const mockProjects = [
     category: "service-delivery",
     cover: "https://watermajifrontend-production.up.railway.app",
     isPublished: true,
-    order: 4,
+    order: 6,
   },
   {
     _id: "5",
@@ -55,7 +77,7 @@ const mockProjects = [
     category: "crypto-ai",
     cover: "https://trade-machine.vercel.app",
     isPublished: true,
-    order: 5,
+    order: 7,
   },
   {
     _id: "6",
@@ -66,7 +88,7 @@ const mockProjects = [
     category: "payment-gateway",
     cover: "https://gatenjia-frontend-production.up.railway.app",
     isPublished: true,
-    order: 6,
+    order: 8,
   },
   {
     _id: "7",
@@ -77,7 +99,7 @@ const mockProjects = [
     category: "content-creators",
     cover: "https://ussd-autopay.vercel.app",
     isPublished: true,
-    order: 7,
+    order: 9,
   },
 ];
 
