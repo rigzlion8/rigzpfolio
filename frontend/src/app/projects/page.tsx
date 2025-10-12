@@ -103,7 +103,7 @@ export default function ProjectsPage() {
       <h1 className="text-2xl sm:text-3xl font-semibold">All Projects</h1>
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((p) => {
-            const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url`;
+            const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url&waitForTimeout=5000&waitUntil=networkidle0`;
             return (
               <article key={`${p.href}-${p.name}`} className="group rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 hover:shadow-xl transition-all bg-white dark:bg-neutral-950">
                 <a

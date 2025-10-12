@@ -151,7 +151,7 @@ export default function Home() {
           </div>
           <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6" role="list" aria-label="Featured projects">
             {projects.map((p) => {
-              const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url`;
+              const thumb = `https://api.microlink.io/?url=${encodeURIComponent(p.href)}&screenshot=true&meta=false&embed=screenshot.url&waitForTimeout=5000&waitUntil=networkidle0`;
               return (
                 <article key={`${p.href}-${p.name}`} role="listitem" className="group rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-800 hover:shadow-xl transition-all bg-white dark:bg-neutral-950">
                   <a

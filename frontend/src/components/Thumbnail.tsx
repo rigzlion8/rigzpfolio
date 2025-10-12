@@ -22,6 +22,8 @@ const getCategoryColors = (category: string) => {
     "Payments": { primary: "#EF4444", secondary: "#DC2626", accent: "#F87171" },
     "Content": { primary: "#EC4899", secondary: "#DB2777", accent: "#F472B6" },
     "Events": { primary: "#06B6D4", secondary: "#0891B2", accent: "#22D3EE" },
+    "Security": { primary: "#DC2626", secondary: "#991B1B", accent: "#FCA5A5" },
+    "Education": { primary: "#7C3AED", secondary: "#5B21B6", accent: "#A78BFA" },
     "Default": { primary: "#40E0D0", secondary: "#22D3EE", accent: "#67E8F9" }
   };
   return colors[category] || colors["Default"];
@@ -99,7 +101,7 @@ export default function Thumbnail({ src, alt, className, projectName = "Portfoli
 
   // Add a timeout to fallback to dynamic thumbnail if remote takes too long
   useEffect(() => {
-    const timeout = 6000; // 6 seconds for both mobile and desktop
+    const timeout = 15000; // 15 seconds to allow slow sites to load
     const timer = setTimeout(() => {
       if (isLoading && !hasError) {
         setHasError(true);
