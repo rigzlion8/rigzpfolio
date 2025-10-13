@@ -25,6 +25,17 @@ const mockProjects = [
     order: 2,
   },
   {
+    _id: "10",
+    slug: "agrimarket",
+    name: "AgriMarket",
+    tagline: "Agricultural marketplace platform",
+    description: "A digital marketplace connecting farmers with buyers, featuring product listings, pricing, inventory management, and direct communication between agricultural producers and consumers.",
+    category: "marketplace",
+    cover: "https://agrimarket.fly.dev/",
+    isPublished: true,
+    order: 3,
+  },
+  {
     _id: "1",
     slug: "myduka-ecommerce",
     name: "MyDuka E-commerce",
@@ -33,7 +44,7 @@ const mockProjects = [
     category: "e-commerce",
     cover: "https://myduka-beta.vercel.app",
     isPublished: true,
-    order: 3,
+    order: 4,
   },
   {
     _id: "2",
@@ -44,7 +55,7 @@ const mockProjects = [
     category: "service-delivery",
     cover: "https://saka-kazi.vercel.app",
     isPublished: true,
-    order: 4,
+    order: 5,
   },
   {
     _id: "3",
@@ -55,7 +66,7 @@ const mockProjects = [
     category: "teen-chat-room",
     cover: "https://teenzoom2-mvp.up.railway.app",
     isPublished: true,
-    order: 5,
+    order: 6,
   },
   {
     _id: "4",
@@ -66,7 +77,7 @@ const mockProjects = [
     category: "service-delivery",
     cover: "https://watermajifrontend-production.up.railway.app",
     isPublished: true,
-    order: 6,
+    order: 7,
   },
   {
     _id: "5",
@@ -77,7 +88,7 @@ const mockProjects = [
     category: "crypto-ai",
     cover: "https://trade-machine.vercel.app",
     isPublished: true,
-    order: 7,
+    order: 8,
   },
   {
     _id: "6",
@@ -88,7 +99,7 @@ const mockProjects = [
     category: "payment-gateway",
     cover: "https://gatenjia-frontend-production.up.railway.app",
     isPublished: true,
-    order: 8,
+    order: 9,
   },
   {
     _id: "7",
@@ -99,7 +110,7 @@ const mockProjects = [
     category: "content-creators",
     cover: "https://ussd-autopay.vercel.app",
     isPublished: true,
-    order: 9,
+    order: 10,
   },
 ];
 

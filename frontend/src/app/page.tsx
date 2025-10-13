@@ -54,6 +54,12 @@ const projects: ExternalProject[] = [
     href: "https://frontend-still-paper-8364.fly.dev/" 
   },
   { 
+    name: "AgriMarket", 
+    tagline: "Digital marketplace connecting farmers with buyers, featuring product listings, pricing, inventory management, and direct communication between agricultural producers and consumers.", 
+    category: "Marketplace", 
+    href: "https://agrimarket.fly.dev/" 
+  },
+  { 
     name: "E‑Commerce Platform", 
     tagline: "Full-stack e-commerce with cart, checkout, payments, and admin dashboard. Built with Next.js, TypeScript, MongoDB, and Stripe integration.", 
     category: "Commerce", 

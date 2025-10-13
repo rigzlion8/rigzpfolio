@@ -40,6 +40,13 @@ const projects = [
     technologies: ["Next.js", "TypeScript", "MongoDB", "Real-time", "Dashboard"]
   },
   { 
+    name: "AgriMarket", 
+    href: "https://agrimarket.fly.dev/", 
+    category: "Marketplace",
+    description: "Digital marketplace connecting farmers with buyers, featuring product listings, pricing, inventory management, and direct communication between agricultural producers and consumers.",
+    technologies: ["React", "Node.js", "MongoDB", "Marketplace", "Agriculture"]
+  },
+  { 
     name: "E‑Commerce Platform", 
     href: "https://myduka-beta.vercel.app", 
     category: "Commerce",

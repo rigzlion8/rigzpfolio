@@ -6,20 +6,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function NewProjectPage() {
+export default function QuickAddProjectPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    tagline: "",
+    url: "",
     description: "",
-    category: "e-commerce",
-    cover: "",
-    technologies: "",
-    githubUrl: "",
-    liveUrl: "",
-    isPublished: false,
+    category: "web-app",
   });
 
   useEffect(() => {
@@ -28,36 +22,71 @@ export default function NewProjectPage() {
     }
   }, [status, router]);
 
+  const extractProjectName = (url: string) => {
+    try {
+      const hostname = new URL(url).hostname;
+      const name = hostname.split('.')[0];
+      return name.charAt(0).toUpperCase() + name.slice(1);
+    } catch {
+      return "New Project";
+    }
+  };
+
+  const generateSlug = (url: string) => {
+    try {
+      const hostname = new URL(url).hostname;
+      return hostname.split('.')[0].toLowerCase().replace(/[^a-z0-9]/g, '-');
+    } catch {
+      return `project-${Date.now()}`;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      const projectName = extractProjectName(formData.url);
+      const slug = generateSlug(formData.url);
+
+      const projectData = {
+        slug,
+        name: projectName,
+        tagline: formData.description.substring(0, 100),
+        description: formData.description,
+        category: formData.category,
+        cover: formData.url,
+        liveUrl: formData.url,
+        isPublished: true,
+      };
+
       const response = await fetch("/api/projects", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(projectData),
       });
 
       if (response.ok) {
         router.push("/admin");
       } else {
         console.error("Failed to create project");
+        alert("Failed to create project. Please try again.");
       }
     } catch (error) {
       console.error("Error creating project:", error);
+      alert("Error creating project. Please check the URL and try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+      [name]: value,
     }));
   };
 
@@ -106,44 +135,36 @@ export default function NewProjectPage() {
       </header>
 
       <main className="px-4 sm:px-6 py-8 max-w-2xl mx-auto">
-        <h1 className="text-2xl sm:text-3xl font-semibold mb-8">Add New Project</h1>
+        <div className="mb-8">
+          <h1 className="text-2xl sm:text-3xl font-semibold mb-2">Quick Add Project</h1>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            Simply enter a URL and description. We'll automatically generate the project name, slug, and screenshot.
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2">
-              Project Name
+            <label htmlFor="url" className="block text-sm font-medium mb-2">
+              Project URL <span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              type="url"
+              id="url"
+              name="url"
+              value={formData.url}
               onChange={handleChange}
               required
               className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent dark:bg-neutral-900"
-              placeholder="Enter project name"
+              placeholder="https://your-project.com"
             />
-          </div>
-
-          <div>
-            <label htmlFor="tagline" className="block text-sm font-medium mb-2">
-              Tagline
-            </label>
-            <input
-              type="text"
-              id="tagline"
-              name="tagline"
-              value={formData.tagline}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent dark:bg-neutral-900"
-              placeholder="Brief description of the project"
-            />
+            <p className="text-xs text-neutral-500 mt-1">
+              The live URL of your project. We'll use this to capture a screenshot automatically.
+            </p>
           </div>
 
           <div>
             <label htmlFor="description" className="block text-sm font-medium mb-2">
-              Description
+              Description <span className="text-red-500">*</span>
             </label>
             <textarea
               id="description"
@@ -151,21 +172,25 @@ export default function NewProjectPage() {
               value={formData.description}
               onChange={handleChange}
               required
-              rows={4}
+              rows={5}
               className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent dark:bg-neutral-900"
-              placeholder="Detailed description of the project"
+              placeholder="A comprehensive description of what your project does, its key features, and technologies used..."
             />
+            <p className="text-xs text-neutral-500 mt-1">
+              Provide a detailed description. The first 100 characters will be used as the tagline.
+            </p>
           </div>
 
           <div>
             <label htmlFor="category" className="block text-sm font-medium mb-2">
-              Category
+              Category <span className="text-red-500">*</span>
             </label>
             <select
               id="category"
               name="category"
               value={formData.category}
               onChange={handleChange}
+              required
               className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent dark:bg-neutral-900"
             >
               <option value="web-app">Web App</option>
@@ -174,101 +199,34 @@ export default function NewProjectPage() {
               <option value="security">Security</option>
               <option value="education">Education</option>
               <option value="marketplace">Marketplace</option>
-              <option value="teen-chat-room">Teen Chat Room</option>
+              <option value="teen-chat-room">Chat/Social</option>
               <option value="crypto-ai">Crypto & AI</option>
               <option value="payment-gateway">Payment Gateway</option>
-              <option value="content-creators">Content Creators</option>
+              <option value="content-creators">Content Platform</option>
             </select>
           </div>
 
-          <div>
-            <label htmlFor="cover" className="block text-sm font-medium mb-2">
-              Cover URL
-            </label>
-            <input
-              type="url"
-              id="cover"
-              name="cover"
-              value={formData.cover}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent dark:bg-neutral-900"
-              placeholder="https://example.com"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="technologies" className="block text-sm font-medium mb-2">
-              Technologies Used
-            </label>
-            <input
-              type="text"
-              id="technologies"
-              name="technologies"
-              value={formData.technologies}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent dark:bg-neutral-900"
-              placeholder="Next.js, React, TypeScript, MongoDB"
-            />
-            <p className="text-xs text-neutral-500 mt-1">Separate technologies with commas</p>
-          </div>
-
-          <div>
-            <label htmlFor="githubUrl" className="block text-sm font-medium mb-2">
-              GitHub Repository URL
-            </label>
-            <input
-              type="url"
-              id="githubUrl"
-              name="githubUrl"
-              value={formData.githubUrl}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent dark:bg-neutral-900"
-              placeholder="https://github.com/username/repository"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="liveUrl" className="block text-sm font-medium mb-2">
-              Live Project URL
-            </label>
-            <input
-              type="url"
-              id="liveUrl"
-              name="liveUrl"
-              value={formData.liveUrl}
-              onChange={handleChange}
-              required
-              className="w-full px-3 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent dark:bg-neutral-900"
-              placeholder="https://your-project.com"
-            />
-          </div>
-
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              id="isPublished"
-              name="isPublished"
-              checked={formData.isPublished}
-              onChange={handleChange}
-              className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-neutral-300 rounded"
-            />
-            <label htmlFor="isPublished" className="ml-2 block text-sm">
-              Publish immediately
-            </label>
+          <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+            <h3 className="text-sm font-semibold mb-2 text-blue-900 dark:text-blue-100">
+              📸 Screenshot Preview
+            </h3>
+            <p className="text-xs text-blue-800 dark:text-blue-200">
+              After submission, the project will automatically have a screenshot generated from the URL you provided. 
+              If the screenshot fails to load, a beautiful gradient thumbnail with your project name will be displayed instead.
+            </p>
           </div>
 
           <div className="flex gap-4 pt-6">
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? "Creating..." : "Create Project"}
+              {loading ? "Adding Project..." : "Add Project"}
             </button>
             <Link
               href="/admin"
-              className="px-6 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900"
+              className="px-6 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors"
             >
               Cancel
             </Link>
@@ -278,3 +236,4 @@ export default function NewProjectPage() {
     </div>
   );
 }
+

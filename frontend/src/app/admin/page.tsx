@@ -94,12 +94,20 @@ export default function AdminPage() {
       <main className="px-4 sm:px-6 py-8">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl sm:text-3xl font-semibold">Projects</h1>
-          <Link
-            href="/admin/projects/new"
-            className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm"
-          >
-            Add Project
-          </Link>
+          <div className="flex gap-3">
+            <Link
+              href="/admin/projects/quick-add"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+            >
+              ⚡ Quick Add
+            </Link>
+            <Link
+              href="/admin/projects/new"
+              className="px-4 py-2 bg-emerald-600 text-white rounded-lg text-sm hover:bg-emerald-700 transition-colors"
+            >
+              + Add Project
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

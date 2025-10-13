@@ -24,6 +24,7 @@ const getCategoryColors = (category: string) => {
     "Events": { primary: "#06B6D4", secondary: "#0891B2", accent: "#22D3EE" },
     "Security": { primary: "#DC2626", secondary: "#991B1B", accent: "#FCA5A5" },
     "Education": { primary: "#7C3AED", secondary: "#5B21B6", accent: "#A78BFA" },
+    "Marketplace": { primary: "#16A34A", secondary: "#15803D", accent: "#4ADE80" },
     "Default": { primary: "#40E0D0", secondary: "#22D3EE", accent: "#67E8F9" }
   };
   return colors[category] || colors["Default"];
