@@ -138,7 +138,7 @@ export default function QuickAddProjectPage() {
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-semibold mb-2">Quick Add Project</h1>
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
-            Simply enter a URL and description. We'll automatically generate the project name, slug, and screenshot.
+            Simply enter a URL and description. We&apos;ll automatically generate the project name, slug, and screenshot.
           </p>
         </div>
 
@@ -158,7 +158,7 @@ export default function QuickAddProjectPage() {
               placeholder="https://your-project.com"
             />
             <p className="text-xs text-neutral-500 mt-1">
-              The live URL of your project. We'll use this to capture a screenshot automatically.
+              The live URL of your project. We&apos;ll use this to capture a screenshot automatically.
             </p>
           </div>
 
