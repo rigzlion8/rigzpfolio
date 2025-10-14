@@ -114,7 +114,7 @@ const mockProjects = [
   },
 ];
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // In production, this would fetch from your backend API
     // const response = await fetch(`${process.env.BACKEND_URL}/api/projects`);

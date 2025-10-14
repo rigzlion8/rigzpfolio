@@ -142,9 +142,10 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params;
+    await params;
     
     // In production, this would delete the project from your backend
+    // const { id } = await params;
     // const response = await fetch(`${process.env.BACKEND_URL}/api/projects/${id}`, {
     //   method: 'DELETE'
     // });
